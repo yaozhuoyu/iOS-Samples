@@ -36,8 +36,90 @@
 如果想要对一个属性字符串进行手动触发，则一定要实现方法`+ (NSSet *)keyPathsForValuesAffectingValueForKey:(NSString *)key`，对于对应的key放回NO，或者实现类方法`automaticallyNotifiesObserversOf<key>`返回NO。然后在对应的值修改的时候调用`willChangeValueForKey`和`didChangeValueForKey`方法。
 
 
+#### 4.关于有序的relaitionship的KVO通知
+
+对于有序的to-many relationship，当修改了`mutableArrayValueForKey:`返回的数组的值(或者`mutableOrderedSetValueForKey:`返回的NSMutableOrderedSet)，则有发出KVO通知，，kind可能有(`NSKeyValueChangeInsertion, NSKeyValueChangeRemoval, and NSKeyValueChangeReplacement`)，具体的下面的例子。（除了方法mutableArrayValueForKey，其他的key-value coding-compliant array or ordered set mutation methods for the key 也适用）
 
 
+```objective-c
+- (void)testOrderedToManyRelationshipKVO{
+    testItem.orderArray = [NSArray arrayWithObject:@"orderArray_string0"];
+    
+    [testItem addObserver:self
+               forKeyPath:@"orderArray"
+                  options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld
+                  context:NULL];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        
+        /*
+         这种触发的结果 change dict 中 NSKeyValueChangeKindKey是setting，kind为1 (NSKeyValueChangeSetting)
+         testItem.orderArray = [NSArray arrayWithObject:@"orderArray0"];
+         */
+        
+        ///////////////////////////////////////////////
+        
+        NSMutableArray *orderArray = [testItem mutableArrayValueForKey:@"orderArray"];
+        /*
+         触发一次kvo，change dict 中 NSKeyValueChangeKindKey 为 NSKeyValueChangeInsertion
+         NSKeyValueChangeOldKey没有值， 
+         NSKeyValueChangeNewKey 为一个只有一个元素(orderArray_string1)的数组
+         NSKeyValueChangeIndexesKey 为一个 NSIndexSet
+         */
+        NSLog(@"==============================================>>> addObject");
+        [orderArray addObject:@"orderArray_string1"];
+        
+        /*
+         触发两次kvo，
+         第一次：
+         change dict 中 NSKeyValueChangeKindKey 为 NSKeyValueChangeInsertion
+         NSKeyValueChangeOldKey没有值，
+         NSKeyValueChangeNewKey 为一个只有一个元素(orderArray_string2)的数组
+         NSKeyValueChangeIndexesKey 为一个 NSIndexSet
+         
+         第二次：
+         change dict 中 NSKeyValueChangeKindKey 为 NSKeyValueChangeInsertion
+         NSKeyValueChangeOldKey没有值，
+         NSKeyValueChangeNewKey 为一个只有一个元素(orderArray_string3)的数组
+         NSKeyValueChangeIndexesKey 为一个 NSIndexSet
+         */
+        NSLog(@"==============================================>>> addObjectsFromArray");
+        [orderArray addObjectsFromArray:@[@"orderArray_string2", @"orderArray_string3"]];
+        
+        /*
+         触发1次kvo，
+         change dict 中 NSKeyValueChangeKindKey 为 NSKeyValueChangeRemoval
+         NSKeyValueChangeOldKey为一个只有一个元素(orderArray_string3)的数组，
+         NSKeyValueChangeNewKey没有值
+         NSKeyValueChangeIndexesKey 为一个 NSIndexSet
+         */
+        NSLog(@"==============================================>>> removeLastObject");
+        [orderArray removeLastObject];
+        
+        /*
+         触发1次kvo，
+         change dict 中 NSKeyValueChangeKindKey 为 NSKeyValueChangeReplacement
+         NSKeyValueChangeOldKey为一个只有一个元素(orderArray_string0)的数组，
+         NSKeyValueChangeNewKey为一个只有一个元素(orderArray_string0_replace)的数组
+         NSKeyValueChangeIndexesKey 为一个 NSIndexSet
+         */
+        NSLog(@"==============================================>>> replaceObject");
+        //orderArray[0] = @"orderArray_string0_replace"; 等价于replaceObjectAtIndex
+        [orderArray replaceObjectAtIndex:0 withObject:@"orderArray_string0_replace"];
+        
+        /*
+         触发四次kvo，
+         第1次 删 NSKeyValueChangeRemoval      orderArray_string2
+         第2次 删 NSKeyValueChangeRemoval      orderArray_string1
+         第3次 删 NSKeyValueChangeRemoval      orderArray_string0_replace
+         第4次 添加 NSKeyValueChangeInsertion   orderArray_string4
+         */
+        NSLog(@"==============================================>>> setArray");
+        [orderArray setArray:@[@"orderArray_string4"]];
+        
+    });
+}
+```
 
 
 

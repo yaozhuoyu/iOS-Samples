@@ -17,4 +17,8 @@
 
 - (NSString *)fullItemName;
 
+//测试 ordered_ to-many relationship
+@property (nonatomic, strong) NSArray *orderArray;
+
+
 @end
