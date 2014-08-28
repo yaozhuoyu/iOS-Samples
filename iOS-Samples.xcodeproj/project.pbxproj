@@ -19,6 +19,12 @@
 		A3737C3219AEE813007D9C1E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3737C1A19AEE813007D9C1E /* UIKit.framework */; };
 		A3737C3A19AEE813007D9C1E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A3737C3819AEE813007D9C1E /* InfoPlist.strings */; };
 		A3737C3C19AEE813007D9C1E /* iOS_SamplesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A3737C3B19AEE813007D9C1E /* iOS_SamplesTests.m */; };
+		A3737C4819AEF04E007D9C1E /* IOSSample.m in Sources */ = {isa = PBXBuildFile; fileRef = A3737C4719AEF04E007D9C1E /* IOSSample.m */; };
+		A3737C4B19AEF0BC007D9C1E /* KVOSample.m in Sources */ = {isa = PBXBuildFile; fileRef = A3737C4A19AEF0BC007D9C1E /* KVOSample.m */; };
+		A3737C4E19AEF0D8007D9C1E /* KVOItem.m in Sources */ = {isa = PBXBuildFile; fileRef = A3737C4D19AEF0D8007D9C1E /* KVOItem.m */; };
+		A3737C5119AEF497007D9C1E /* SampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A3737C5019AEF497007D9C1E /* SampleViewController.m */; };
+		A3737C5319AEF78F007D9C1E /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = A3737C5219AEF78F007D9C1E /* README.md */; };
+		A3737C5519AEFE8E007D9C1E /* README(KVO-Sample).md in Resources */ = {isa = PBXBuildFile; fileRef = A3737C5419AEFE8E007D9C1E /* README(KVO-Sample).md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +54,16 @@
 		A3737C3719AEE813007D9C1E /* iOS-SamplesTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "iOS-SamplesTests-Info.plist"; sourceTree = "<group>"; };
 		A3737C3919AEE813007D9C1E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A3737C3B19AEE813007D9C1E /* iOS_SamplesTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iOS_SamplesTests.m; sourceTree = "<group>"; };
+		A3737C4619AEF04E007D9C1E /* IOSSample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOSSample.h; sourceTree = "<group>"; };
+		A3737C4719AEF04E007D9C1E /* IOSSample.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOSSample.m; sourceTree = "<group>"; };
+		A3737C4919AEF0BC007D9C1E /* KVOSample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KVOSample.h; sourceTree = "<group>"; };
+		A3737C4A19AEF0BC007D9C1E /* KVOSample.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KVOSample.m; sourceTree = "<group>"; };
+		A3737C4C19AEF0D8007D9C1E /* KVOItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KVOItem.h; sourceTree = "<group>"; };
+		A3737C4D19AEF0D8007D9C1E /* KVOItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KVOItem.m; sourceTree = "<group>"; };
+		A3737C4F19AEF497007D9C1E /* SampleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SampleViewController.h; sourceTree = "<group>"; };
+		A3737C5019AEF497007D9C1E /* SampleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SampleViewController.m; sourceTree = "<group>"; };
+		A3737C5219AEF78F007D9C1E /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = SOURCE_ROOT; };
+		A3737C5419AEFE8E007D9C1E /* README(KVO-Sample).md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "README(KVO-Sample).md"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,10 +123,15 @@
 		A3737C1C19AEE813007D9C1E /* iOS-Samples */ = {
 			isa = PBXGroup;
 			children = (
+				A3737C4519AEEFAD007D9C1E /* KVO-Sample */,
 				A3737C2519AEE813007D9C1E /* AppDelegate.h */,
 				A3737C2619AEE813007D9C1E /* AppDelegate.m */,
+				A3737C4F19AEF497007D9C1E /* SampleViewController.h */,
+				A3737C5019AEF497007D9C1E /* SampleViewController.m */,
 				A3737C2819AEE813007D9C1E /* Images.xcassets */,
 				A3737C1D19AEE813007D9C1E /* Supporting Files */,
+				A3737C4619AEF04E007D9C1E /* IOSSample.h */,
+				A3737C4719AEF04E007D9C1E /* IOSSample.m */,
 			);
 			path = "iOS-Samples";
 			sourceTree = "<group>";
@@ -118,6 +139,7 @@
 		A3737C1D19AEE813007D9C1E /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				A3737C5219AEF78F007D9C1E /* README.md */,
 				A3737C1E19AEE813007D9C1E /* iOS-Samples-Info.plist */,
 				A3737C1F19AEE813007D9C1E /* InfoPlist.strings */,
 				A3737C2219AEE813007D9C1E /* main.m */,
@@ -142,6 +164,18 @@
 				A3737C3819AEE813007D9C1E /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		A3737C4519AEEFAD007D9C1E /* KVO-Sample */ = {
+			isa = PBXGroup;
+			children = (
+				A3737C5419AEFE8E007D9C1E /* README(KVO-Sample).md */,
+				A3737C4919AEF0BC007D9C1E /* KVOSample.h */,
+				A3737C4A19AEF0BC007D9C1E /* KVOSample.m */,
+				A3737C4C19AEF0D8007D9C1E /* KVOItem.h */,
+				A3737C4D19AEF0D8007D9C1E /* KVOItem.m */,
+			);
+			path = "KVO-Sample";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -218,7 +252,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A3737C5319AEF78F007D9C1E /* README.md in Resources */,
 				A3737C2119AEE813007D9C1E /* InfoPlist.strings in Resources */,
+				A3737C5519AEFE8E007D9C1E /* README(KVO-Sample).md in Resources */,
 				A3737C2919AEE813007D9C1E /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -238,7 +274,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A3737C4B19AEF0BC007D9C1E /* KVOSample.m in Sources */,
 				A3737C2719AEE813007D9C1E /* AppDelegate.m in Sources */,
+				A3737C5119AEF497007D9C1E /* SampleViewController.m in Sources */,
+				A3737C4819AEF04E007D9C1E /* IOSSample.m in Sources */,
+				A3737C4E19AEF0D8007D9C1E /* KVOItem.m in Sources */,
 				A3737C2319AEE813007D9C1E /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -438,6 +478,7 @@
 				A3737C4119AEE813007D9C1E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A3737C4219AEE813007D9C1E /* Build configuration list for PBXNativeTarget "iOS-SamplesTests" */ = {
 			isa = XCConfigurationList;
@@ -446,6 +487,7 @@
 				A3737C4419AEE813007D9C1E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
