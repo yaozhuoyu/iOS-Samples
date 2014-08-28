@@ -21,18 +21,30 @@
     
     testItem = [[KVOItem alloc] init];
     testItem.itemName = @"item0";
+    testItem.manualTriggerKVOItemName = @"manual_trigger_item0";
+    
+//    [testItem addObserver:self
+//               forKeyPath:@"itemName"
+//                  options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionPrior
+//                  context:NULL];
+//    [testItem addObserver:self
+//               forKeyPath:@"fullItemName"
+//                  options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld
+//                  context:NULL];
     
     [testItem addObserver:self
-               forKeyPath:@"itemName"
-                  options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionPrior
+               forKeyPath:@"manualTriggerKVOItemName"
+                  options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld
                   context:NULL];
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         testItem.itemName = @"item1";
+        testItem.manualTriggerKVOItemName = @"manual_trigger_item1";
     });
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         testItem.itemName = @"item2";
+        testItem.manualTriggerKVOItemName = @"manual_trigger_item1";
     });
     
 }
