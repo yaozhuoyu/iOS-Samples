@@ -23,8 +23,8 @@
     testItem.itemName = @"item0";
     testItem.manualTriggerKVOItemName = @"manual_trigger_item0";
     
-    [self testOrderedToManyRelationshipKVO];
-    
+    //[self testOrderedToManyRelationshipKVO];
+    [self testUnOrderedToManyRelationshipKVO];
     /*
     [testItem addObserver:self
                forKeyPath:@"itemName"
@@ -55,6 +55,9 @@
     
 }
 
+/******************************************************
+ 测试有序的kvo
+ ******************************************************/
 - (void)testOrderedToManyRelationshipKVO{
     testItem.orderArray = [NSArray arrayWithObject:@"orderArray_string0"];
     
@@ -133,6 +136,81 @@
     });
 }
 
+/******************************************************
+ 测试无序的kvo
+******************************************************/
+- (void)testUnOrderedToManyRelationshipKVO{
+    testItem.unorderSet = [NSSet setWithObject:@"unorderSet_string0"];
+    
+    [testItem addObserver:self
+               forKeyPath:@"unorderSet"
+                  options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld
+                  context:NULL];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        
+        /*
+         这种触发的结果 change dict 中 NSKeyValueChangeKindKey是setting，kind为1 (NSKeyValueChangeSetting)
+         NSKeyValueChangeNewKey 和 NSKeyValueChangeOldKey 都是NSSet
+         testItem.unorderSet = [NSSet setWithObject:@"_unorderSet_string0"];
+        */
+        
+        ///////////////////////////////////////////////
+        
+        NSMutableSet *mutableSet = [testItem mutableSetValueForKey:@"unorderSet"];
+        
+        /*
+         触发一次kvo，change dict 中 NSKeyValueChangeKindKey 为 NSKeyValueChangeInsertion
+         NSKeyValueChangeOldKey没有值，
+         NSKeyValueChangeNewKey 为一个只有一个元素(unorderSet_string1)的NSSet
+         */
+        NSLog(@"==============================================>>> addObject");
+        [mutableSet addObject:@"unorderSet_string1"];
+        
+        /*
+         触发1次kvo，
+         
+         change dict 中 NSKeyValueChangeKindKey 为 NSKeyValueChangeInsertion
+         NSKeyValueChangeOldKey没有值，
+         NSKeyValueChangeNewKey 为一个有两个元素(unorderSet_string2,unorderSet_string3)的NSSet
+         */
+        NSLog(@"==============================================>>> addObjectsFromArray");
+        [mutableSet addObjectsFromArray:@[@"unorderSet_string2", @"unorderSet_string3"]];
+        
+        
+        /*
+         触发1次kvo，
+         change dict 中 NSKeyValueChangeKindKey 为 NSKeyValueChangeInsertion
+         NSKeyValueChangeOldKey没有值，
+         NSKeyValueChangeNewKey为一个有1元素(unorderSet_string4)的NSSet
+         当unionSet的值为unorderSet_string3时，NSKeyValueChangeKindKey还是NSKeyValueChangeInsertion，
+         NSKeyValueChangeNewKey则变成一个空的NSSet
+         */
+        NSLog(@"==============================================>>> unionSet");
+        [mutableSet unionSet:[NSSet setWithObject:@"unorderSet_string4"]];
+        
+        /*
+         触发1次kvo，
+         change dict 中 NSKeyValueChangeKindKey 为 NSKeyValueChangeRemoval
+         NSKeyValueChangeOldKey为一个只有一个元素(unorderSet_string4)的NSSet，
+         NSKeyValueChangeNewKey没有值
+         */
+        NSLog(@"==============================================>>> minusSet");
+        [mutableSet minusSet:[NSSet setWithObject:@"unorderSet_string4"]];
+        
+        /*
+         触发一次KVO
+         change dict 中 NSKeyValueChangeKindKey 为 NSKeyValueChangeRemoval
+         NSKeyValueChangeOldKey为一个有2个元素(unorderSet_string0， unorderSet_string1)的NSSet，
+         NSKeyValueChangeNewKey没有值
+         */
+        NSLog(@"==============================================>>> intersectSet");
+        //当前mutableSet结果为unorderSet_string0 ，unorderSet_string1， unorderSet_string2， unorderSet_string3
+        [mutableSet intersectSet:[NSSet setWithArray:@[@"unorderSet_string2", @"unorderSet_string3", @"unorderSet_string6"]]];
+        //当前mutableSet结果为unorderSet_string2， unorderSet_string3
+    });
+}
+
 #pragma mark -
 
 - (void)observeValueForKeyPath:(NSString *)keyPath
@@ -141,7 +219,6 @@
                        context:(void *)context{
     NSLog(@"----> key path (%@)",keyPath);
     NSLog(@"----> change (%@)",change);
-    
 }
 
 

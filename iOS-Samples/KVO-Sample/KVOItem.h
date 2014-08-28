@@ -20,5 +20,7 @@
 //测试 ordered_ to-many relationship
 @property (nonatomic, strong) NSArray *orderArray;
 
+//测试 unordered_ to-many relationship
+@property (nonatomic, strong) NSSet *unorderSet;
 
 @end

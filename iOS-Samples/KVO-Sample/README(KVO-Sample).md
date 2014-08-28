@@ -36,7 +36,7 @@
 如果想要对一个属性字符串进行手动触发，则一定要实现方法`+ (NSSet *)keyPathsForValuesAffectingValueForKey:(NSString *)key`，对于对应的key放回NO，或者实现类方法`automaticallyNotifiesObserversOf<key>`返回NO。然后在对应的值修改的时候调用`willChangeValueForKey`和`didChangeValueForKey`方法。
 
 
-#### 4.关于有序的relaitionship的KVO通知
+#### 4.关于有序的relationship的KVO通知
 
 对于有序的to-many relationship，当修改了`mutableArrayValueForKey:`返回的数组的值(或者`mutableOrderedSetValueForKey:`返回的NSMutableOrderedSet)，则有发出KVO通知，，kind可能有(`NSKeyValueChangeInsertion, NSKeyValueChangeRemoval, and NSKeyValueChangeReplacement`)，具体的下面的例子。（除了方法mutableArrayValueForKey，其他的key-value coding-compliant array or ordered set mutation methods for the key 也适用）
 
@@ -121,11 +121,97 @@
 }
 ```
 
+如果需要手动触发，则应该使用下面两个方法：
 
+```objective-c
+- (void)willChange:(NSKeyValueChange)changeKind valuesAtIndexes:(NSIndexSet *)indexes forKey:(NSString *)key;
+- (void)didChange:(NSKeyValueChange)changeKind valuesAtIndexes:(NSIndexSet *)indexes forKey:(NSString *)key;
+```
 
+#### 5.关于无序的relationship的KVO通知
 
+同有序的差不多，在此处使用NSSet，看下面的例子：
 
+```objective-c
+- (void)testUnOrderedToManyRelationshipKVO{
+    testItem.unorderSet = [NSSet setWithObject:@"unorderSet_string0"];
+    
+    [testItem addObserver:self
+               forKeyPath:@"unorderSet"
+                  options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld
+                  context:NULL];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        
+        /*
+         这种触发的结果 change dict 中 NSKeyValueChangeKindKey是setting，kind为1 (NSKeyValueChangeSetting)
+         NSKeyValueChangeNewKey 和 NSKeyValueChangeOldKey 都是NSSet
+         testItem.unorderSet = [NSSet setWithObject:@"_unorderSet_string0"];
+        */
+        
+        ///////////////////////////////////////////////
+        
+        NSMutableSet *mutableSet = [testItem mutableSetValueForKey:@"unorderSet"];
+        
+        /*
+         触发一次kvo，change dict 中 NSKeyValueChangeKindKey 为 NSKeyValueChangeInsertion
+         NSKeyValueChangeOldKey没有值，
+         NSKeyValueChangeNewKey 为一个只有一个元素(unorderSet_string1)的NSSet
+         */
+        NSLog(@"==============================================>>> addObject");
+        [mutableSet addObject:@"unorderSet_string1"];
+        
+        /*
+         触发1次kvo，
+         
+         change dict 中 NSKeyValueChangeKindKey 为 NSKeyValueChangeInsertion
+         NSKeyValueChangeOldKey没有值，
+         NSKeyValueChangeNewKey 为一个有两个元素(unorderSet_string2,unorderSet_string3)的NSSet
+         */
+        NSLog(@"==============================================>>> addObjectsFromArray");
+        [mutableSet addObjectsFromArray:@[@"unorderSet_string2", @"unorderSet_string3"]];
+        
+        
+        /*
+         触发1次kvo，
+         change dict 中 NSKeyValueChangeKindKey 为 NSKeyValueChangeInsertion
+         NSKeyValueChangeOldKey没有值，
+         NSKeyValueChangeNewKey为一个有1元素(unorderSet_string4)的NSSet
+         当unionSet的值为unorderSet_string3时，NSKeyValueChangeKindKey还是NSKeyValueChangeInsertion，
+         NSKeyValueChangeNewKey则变成一个空的NSSet
+         */
+        NSLog(@"==============================================>>> unionSet");
+        [mutableSet unionSet:[NSSet setWithObject:@"unorderSet_string4"]];
+        
+        /*
+         触发1次kvo，
+         change dict 中 NSKeyValueChangeKindKey 为 NSKeyValueChangeRemoval
+         NSKeyValueChangeOldKey为一个只有一个元素(unorderSet_string4)的NSSet，
+         NSKeyValueChangeNewKey没有值
+         */
+        NSLog(@"==============================================>>> minusSet");
+        [mutableSet minusSet:[NSSet setWithObject:@"unorderSet_string4"]];
+        
+        /*
+         触发一次KVO
+         change dict 中 NSKeyValueChangeKindKey 为 NSKeyValueChangeRemoval
+         NSKeyValueChangeOldKey为一个有2个元素(unorderSet_string0， unorderSet_string1)的NSSet，
+         NSKeyValueChangeNewKey没有值
+         */
+        NSLog(@"==============================================>>> intersectSet");
+        //当前mutableSet结果为unorderSet_string0 ，unorderSet_string1， unorderSet_string2， unorderSet_string3
+        [mutableSet intersectSet:[NSSet setWithArray:@[@"unorderSet_string2", @"unorderSet_string3", @"unorderSet_string6"]]];
+        //当前mutableSet结果为unorderSet_string2， unorderSet_string3
+    });
+}
+```
 
+如果需要手动触发，则应该使用下面两个方法：
+
+```objective-c
+- (void)willChangeValueForKey:(NSString *)key withSetMutation:(NSKeyValueSetMutationKind)mutationKind usingObjects:(NSSet *)objects;
+- (void)didChangeValueForKey:(NSString *)key withSetMutation:(NSKeyValueSetMutationKind)mutationKind usingObjects:(NSSet *)objects;
+```
 
 
 
