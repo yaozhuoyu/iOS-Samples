@@ -8,9 +8,9 @@
 
 #import "SampleViewController.h"
 #import "KVOSample.h"
+#import "KVCSample.h"
 
 @interface SampleViewController (){
-    //KVOSample *kvoSample_;
     IOSSample *iosSample_;
 }
 
@@ -22,8 +22,11 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
-        iosSample_ = [[KVOSample alloc] init];
+        //kvo test
+        //iosSample_ = [[KVOSample alloc] init];
+        
+        //kvc test
+        iosSample_ = [[KVCSample alloc] init];
     }
     return self;
 }

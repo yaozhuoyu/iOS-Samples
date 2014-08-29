@@ -25,6 +25,9 @@
 		A3737C5119AEF497007D9C1E /* SampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A3737C5019AEF497007D9C1E /* SampleViewController.m */; };
 		A3737C5319AEF78F007D9C1E /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = A3737C5219AEF78F007D9C1E /* README.md */; };
 		A3737C5519AEFE8E007D9C1E /* README(KVO-Sample).md in Resources */ = {isa = PBXBuildFile; fileRef = A3737C5419AEFE8E007D9C1E /* README(KVO-Sample).md */; };
+		A3737C5C19B0582D007D9C1E /* README(KVC-Sample).md in Resources */ = {isa = PBXBuildFile; fileRef = A3737C5B19B0582D007D9C1E /* README(KVC-Sample).md */; };
+		A3737C5F19B058F9007D9C1E /* KVCSample.m in Sources */ = {isa = PBXBuildFile; fileRef = A3737C5E19B058F9007D9C1E /* KVCSample.m */; };
+		A3737C6219B06D28007D9C1E /* Person.m in Sources */ = {isa = PBXBuildFile; fileRef = A3737C6119B06D28007D9C1E /* Person.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,6 +67,11 @@
 		A3737C5019AEF497007D9C1E /* SampleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SampleViewController.m; sourceTree = "<group>"; };
 		A3737C5219AEF78F007D9C1E /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = SOURCE_ROOT; };
 		A3737C5419AEFE8E007D9C1E /* README(KVO-Sample).md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "README(KVO-Sample).md"; sourceTree = "<group>"; };
+		A3737C5B19B0582D007D9C1E /* README(KVC-Sample).md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "README(KVC-Sample).md"; sourceTree = "<group>"; };
+		A3737C5D19B058F9007D9C1E /* KVCSample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KVCSample.h; sourceTree = "<group>"; };
+		A3737C5E19B058F9007D9C1E /* KVCSample.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KVCSample.m; sourceTree = "<group>"; };
+		A3737C6019B06D28007D9C1E /* Person.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Person.h; sourceTree = "<group>"; };
+		A3737C6119B06D28007D9C1E /* Person.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Person.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -123,6 +131,7 @@
 		A3737C1C19AEE813007D9C1E /* iOS-Samples */ = {
 			isa = PBXGroup;
 			children = (
+				A3737C5A19B0582D007D9C1E /* KVC-Sample */,
 				A3737C4519AEEFAD007D9C1E /* KVO-Sample */,
 				A3737C2519AEE813007D9C1E /* AppDelegate.h */,
 				A3737C2619AEE813007D9C1E /* AppDelegate.m */,
@@ -176,6 +185,18 @@
 				A3737C4D19AEF0D8007D9C1E /* KVOItem.m */,
 			);
 			path = "KVO-Sample";
+			sourceTree = "<group>";
+		};
+		A3737C5A19B0582D007D9C1E /* KVC-Sample */ = {
+			isa = PBXGroup;
+			children = (
+				A3737C5B19B0582D007D9C1E /* README(KVC-Sample).md */,
+				A3737C5D19B058F9007D9C1E /* KVCSample.h */,
+				A3737C5E19B058F9007D9C1E /* KVCSample.m */,
+				A3737C6019B06D28007D9C1E /* Person.h */,
+				A3737C6119B06D28007D9C1E /* Person.m */,
+			);
+			path = "KVC-Sample";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -253,6 +274,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A3737C5319AEF78F007D9C1E /* README.md in Resources */,
+				A3737C5C19B0582D007D9C1E /* README(KVC-Sample).md in Resources */,
 				A3737C2119AEE813007D9C1E /* InfoPlist.strings in Resources */,
 				A3737C5519AEFE8E007D9C1E /* README(KVO-Sample).md in Resources */,
 				A3737C2919AEE813007D9C1E /* Images.xcassets in Resources */,
@@ -276,6 +298,8 @@
 			files = (
 				A3737C4B19AEF0BC007D9C1E /* KVOSample.m in Sources */,
 				A3737C2719AEE813007D9C1E /* AppDelegate.m in Sources */,
+				A3737C6219B06D28007D9C1E /* Person.m in Sources */,
+				A3737C5F19B058F9007D9C1E /* KVCSample.m in Sources */,
 				A3737C5119AEF497007D9C1E /* SampleViewController.m in Sources */,
 				A3737C4819AEF04E007D9C1E /* IOSSample.m in Sources */,
 				A3737C4E19AEF0D8007D9C1E /* KVOItem.m in Sources */,
