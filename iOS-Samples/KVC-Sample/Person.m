@@ -37,6 +37,11 @@
     
 }
 
+- (void)setSubPersons:(NSArray *)subs{
+    ///test
+    NSLog(@"called set subpersons : %@", subs);
+}
+
 @end
 
 

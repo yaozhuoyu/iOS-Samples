@@ -15,7 +15,8 @@
 - (void)test{
     //[self test_setNilToScalarProperty];
     //[self test_attributeAndToOneRelationCompliance];
-    [self test_collectionOperators];
+    //[self test_collectionOperators];
+    [self test_orderCollectionsSearch];
 }
 
 - (void)test_setNilToScalarProperty{
@@ -110,7 +111,14 @@
     
 }
 
-
+- (void)test_orderCollectionsSearch{
+    Person *mPerson = [[Person alloc] init];
+    NSMutableArray *mutableArray = [mPerson mutableArrayValueForKey:@"subPersons"];
+    NSLog(@"mutableArray : %@", mutableArray);
+    //[mutableArray addObject:@"sub0"];
+    NSLog(@"mutableArray : %@", mutableArray);
+    
+}
 
 
 
