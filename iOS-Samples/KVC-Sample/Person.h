@@ -17,4 +17,6 @@
 //readonly
 @property (nonatomic, readonly, strong) NSString *dna;
 
+@property (nonatomic, strong) NSArray *childern;
+
 @end

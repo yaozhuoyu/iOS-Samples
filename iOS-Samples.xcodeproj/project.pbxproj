@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A360ED2619B5B7E100242324 /* Child.m in Sources */ = {isa = PBXBuildFile; fileRef = A360ED2519B5B7E100242324 /* Child.m */; };
 		A3737C1719AEE813007D9C1E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3737C1619AEE813007D9C1E /* Foundation.framework */; };
 		A3737C1919AEE813007D9C1E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3737C1819AEE813007D9C1E /* CoreGraphics.framework */; };
 		A3737C1B19AEE813007D9C1E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3737C1A19AEE813007D9C1E /* UIKit.framework */; };
@@ -41,6 +42,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A360ED2419B5B7E100242324 /* Child.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Child.h; sourceTree = "<group>"; };
+		A360ED2519B5B7E100242324 /* Child.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Child.m; sourceTree = "<group>"; };
 		A3737C1319AEE813007D9C1E /* iOS-Samples.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "iOS-Samples.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3737C1619AEE813007D9C1E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		A3737C1819AEE813007D9C1E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -195,6 +198,8 @@
 				A3737C5E19B058F9007D9C1E /* KVCSample.m */,
 				A3737C6019B06D28007D9C1E /* Person.h */,
 				A3737C6119B06D28007D9C1E /* Person.m */,
+				A360ED2419B5B7E100242324 /* Child.h */,
+				A360ED2519B5B7E100242324 /* Child.m */,
 			);
 			path = "KVC-Sample";
 			sourceTree = "<group>";
@@ -296,6 +301,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A360ED2619B5B7E100242324 /* Child.m in Sources */,
 				A3737C4B19AEF0BC007D9C1E /* KVOSample.m in Sources */,
 				A3737C2719AEE813007D9C1E /* AppDelegate.m in Sources */,
 				A3737C6219B06D28007D9C1E /* Person.m in Sources */,
