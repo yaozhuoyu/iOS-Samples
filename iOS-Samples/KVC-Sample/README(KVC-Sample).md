@@ -81,10 +81,10 @@ KVC会首先尝试使用accessor方法去获取和设置对应的值，如果没
 
 对于`setValue:forKey:`
 当对一个属性调用`setValue:forKey:`的时候，按照下面顺序查找：
-(1)类先寻找名字和`set<Key>:`相同的accessor方法。
-(2)如果没有找到accessor方法，并且类的方法`accessInstanceVariablesDirectly`返回YES，则比较类中实例变量和下面的名字是否相配，`_<key>`、`_is<Key>`，`<key>`，`is<Key>`(按序比较)。
-(3)如果一个相匹配的accessor方法或者实例变量被找到，则用其去设置值。
-(4)如果都没有找到，则会调用方法`setValue:forUndefinedKey:`。
+*(1)类先寻找名字和`set<Key>:`相同的accessor方法。
+*(2)如果没有找到accessor方法，并且类的方法`accessInstanceVariablesDirectly`返回YES，则比较类中实例变量和下面的名字是否相配，`_<key>`、`_is<Key>`，`<key>`，`is<Key>`(按序比较)。
+*(3)如果一个相匹配的accessor方法或者实例变量被找到，则用其去设置值。
+*(4)如果都没有找到，则会调用方法`setValue:forUndefinedKey:`。
 
 对于`valueForKey:`
 (1)首先在类中按照`get<Key>`、`<key>`、`is<Key>`的顺序去寻找对应的accessor方法，如果找到，则直接调用。如果方法返回的是对象指针类型，则直接简单的返回，如果返回的类型为scalar，并且支持NSNumber转换，返回返回一个NSNumber；否则转换为一个NSValue并返回。
