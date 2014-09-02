@@ -13,25 +13,46 @@
 
 - (void)test{
     //[self test_setNilToScalarProperty];
-    [self test_toManyRelationShipProperty];
+    [self test_attributeAndToOneRelationCompliance];
 }
 
 - (void)test_setNilToScalarProperty{
     Person *mPerson = [[Person alloc] init];
     [mPerson setValue:nil forKey:@"personName"];
     [mPerson setValue:nil forKey:@"male"];
-    NSLog(@"%@ -> %@", NSStringFromSelector(_cmd), mPerson);
+    NSLog(@"%@ -> \n%@", NSStringFromSelector(_cmd), mPerson);
 }
 
-- (void)test_toManyRelationShipProperty{
+- (void)test_attributeAndToOneRelationCompliance{
     Person *mPerson = [[Person alloc] init];
     
-    mPerson.childern = [NSArray arrayWithObjects:@"child0",@"child1",@"child2", nil];
+    /*
+     successed
+     */
+    [mPerson setValue:@"internal1" forKey:@"_internalName"];
+    NSLog(@"%@ -> \n%@", NSStringFromSelector(_cmd), mPerson);
     
-    //
-    //NSUInteger childernCount = [mPerson count];
+    /*
+     successed
+     */
+    [mPerson setValue:@"internal2" forKey:@"internalName"];
+    NSLog(@"%@ -> \n%@", NSStringFromSelector(_cmd), mPerson);
     
-    NSLog(@"%@ -> %@", NSStringFromSelector(_cmd), mPerson);
+    
+    /*
+     successed
+     */
+    [mPerson setValue:@"internalHouse1" forKey:@"internalHouse"];
+    NSLog(@"%@ -> \n%@", NSStringFromSelector(_cmd), mPerson);
+    
+    /*
+     error
+    [mPerson setValue:@"internalHouse2" forKey:@"_internalHouse"];
+    NSLog(@"%@ -> \n%@", NSStringFromSelector(_cmd), mPerson);
+     */
+    
+    [mPerson setValue:@"dna1" forKey:@"dna"];
+    NSLog(@"%@ -> \n%@", NSStringFromSelector(_cmd), mPerson);
 }
 
 

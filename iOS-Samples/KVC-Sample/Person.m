@@ -8,6 +8,13 @@
 
 #import "Person.h"
 
+@interface Person(){
+    NSString *_internalName;
+    NSString *internalHouse;
+}
+
+@end
+
 @implementation Person
 
 - (void)setNilValueForKey:(NSString *)key{
@@ -21,8 +28,11 @@
 - (NSString *)description{
     
     NSMutableString *description = [[NSMutableString alloc] init];
-    [description appendString:[NSString stringWithFormat:@"person -> \nisMale:%d", [self isMale]]];
-    [description appendString:[NSString stringWithFormat:@"\npersonName:%@", self.personName]];
+    [description appendString:[NSString stringWithFormat:@"person  \tisMale:%d", [self isMale]]];
+    [description appendString:[NSString stringWithFormat:@"\tpersonName:%@", self.personName]];
+    [description appendString:[NSString stringWithFormat:@"\t_internalName:%@", _internalName]];
+    [description appendString:[NSString stringWithFormat:@"\tinternalHouse:%@", internalHouse]];
+    [description appendString:[NSString stringWithFormat:@"\tdna:%@", _dna]];
     return description;
     
 }

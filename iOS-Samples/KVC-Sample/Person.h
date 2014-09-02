@@ -14,7 +14,7 @@
 
 @property (nonatomic, assign, getter = isMale) BOOL male;
 
-//// to many relationship
-@property (nonatomic, strong) NSArray *childern;
+//readonly
+@property (nonatomic, readonly, strong) NSString *dna;
 
 @end
