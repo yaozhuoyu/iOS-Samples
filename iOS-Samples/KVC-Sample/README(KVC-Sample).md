@@ -87,21 +87,21 @@ KVC会首先尝试使用accessor方法去获取和设置对应的值，如果没
 * (4)如果都没有找到，则会调用方法`setValue:forUndefinedKey:`。
 
 对于`valueForKey:`
-(1)首先在类中按照`get<Key>`、`<key>`、`is<Key>`的顺序去寻找对应的accessor方法，如果找到，则直接调用。如果方法返回的是对象指针类型，则直接简单的返回，如果返回的类型为scalar，并且支持NSNumber转换，返回返回一个NSNumber；否则转换为一个NSValue并返回。
-(2)如果对应的accessor方法没有找到，则在类中寻找如下格式的方法`countOf<Key>`、`objectIn<Key>AtIndex:`(对应于NSArray中的primitive methods)、`<key>AtIndexes:`(对应于NSArray中的方法 objectsAtIndexes:)。
+* (1)首先在类中按照`get<Key>`、`<key>`、`is<Key>`的顺序去寻找对应的accessor方法，如果找到，则直接调用。如果方法返回的是对象指针类型，则直接简单的返回，如果返回的类型为scalar，并且支持NSNumber转换，返回返回一个NSNumber；否则转换为一个NSValue并返回。
+* (2)如果对应的accessor方法没有找到，则在类中寻找如下格式的方法`countOf<Key>`、`objectIn<Key>AtIndex:`(对应于NSArray中的primitive methods)、`<key>AtIndexes:`(对应于NSArray中的方法 objectsAtIndexes:)。
 如果`countOf<Key>`方法和剩下的两个方法中的至少一个找到了，则一个能响应所有NSArray方法的集合代理对象（collection proxy object）会返回。每一个发送给集合代理对象的NSArray方法都是有方法`countOf<Key>`、`objectIn<Key>AtIndex:`、`<key>AtIndexes:`组合起来的。
-(3)如果上述一些列array access方法没有找到，则继续寻找是否有下面三个方法`countOf<Key>`、`enumeratorOf<Key>`、`memberOf<Key>:`(对应NSSet的primitive methods)。
+* (3)如果上述一些列array access方法没有找到，则继续寻找是否有下面三个方法`countOf<Key>`、`enumeratorOf<Key>`、`memberOf<Key>:`(对应NSSet的primitive methods)。
 如果这三个方法发现了，则一个能响应所有NSSet方法的集合代理对象（collection proxy object）会返回，每一个发送给集合代理对象的NSSet方法都是有方法`countOf<Key>`、`enumeratorOf<Key>`、`memberOf<Key>:`组合起来的。
-(4)如果上述方法都没有发现，并且类的方法`accessInstanceVariablesDirectly`返回YES，则会按下面顺序去寻找对应的实例变量名字`_<key>`、`_is<Key>`、`<key>`、`is<Key>`，如果找到，则对应的值会返回，如果值为scalar类型，则会包裹成对应的NSNumber或者NSValue再返回。
-(5)如果上面的都没有找到，则会调用方法`valueForUndefinedKey:`。
+* (4)如果上述方法都没有发现，并且类的方法`accessInstanceVariablesDirectly`返回YES，则会按下面顺序去寻找对应的实例变量名字`_<key>`、`_is<Key>`、`<key>`、`is<Key>`，如果找到，则对应的值会返回，如果值为scalar类型，则会包裹成对应的NSNumber或者NSValue再返回。
+* (5)如果上面的都没有找到，则会调用方法`valueForUndefinedKey:`。
 
 
 ##### 2.ordered collection的查找模式
 
 对于方法`mutableArrayValueForKey:`的查找如下：
-(1)类首先名字匹配`insertObject:in<Key>AtIndex:`和`removeObjectFrom<Key>AtIndex:`的方法(对应NSMutableArray的方法`insertObject:atIndex:`、`removeObjectAtIndex:`)，或者名字匹配`insert<Key>:atIndexes:`和`remove<Key>AtIndexes:`的方法(对应NSMutableArray的方法`insertObjects:atIndexes:`、`removeObjectsAtIndexes:`)。
+* (1)类首先名字匹配`insertObject:in<Key>AtIndex:`和`removeObjectFrom<Key>AtIndex:`的方法(对应NSMutableArray的方法`insertObject:atIndex:`、`removeObjectAtIndex:`)，或者名字匹配`insert<Key>:atIndexes:`和`remove<Key>AtIndexes:`的方法(对应NSMutableArray的方法`insertObjects:atIndexes:`、`removeObjectsAtIndexes:`)。
 如果至少一个insetion方法和至少一个removal方法找到，则返回一个collection proxy object，对其的调用的每一个NSMutableArray方法都是有上面的insetion方法和removal方法组成完成的。
-(2)
+* (2)
 
 
 
