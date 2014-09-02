@@ -11,11 +11,21 @@
 @interface Person(){
     NSString *_internalName;
     NSString *internalHouse;
+    NSMutableArray *internalChildern;
 }
 
 @end
 
 @implementation Person
+
+- (id)init{
+    self = [super init];
+    if (self) {
+        //必须为NSMutableArray类型
+        internalChildern = [NSMutableArray array];
+    }
+    return self;
+}
 
 - (void)setNilValueForKey:(NSString *)key{
     if ([key isEqualToString:@"male"]) {
@@ -33,13 +43,14 @@
     [description appendString:[NSString stringWithFormat:@"\t_internalName:%@", _internalName]];
     [description appendString:[NSString stringWithFormat:@"\tinternalHouse:%@", internalHouse]];
     [description appendString:[NSString stringWithFormat:@"\tdna:%@", _dna]];
+    [description appendString:[NSString stringWithFormat:@"\tinternalChildern:%@", internalChildern]];
     return description;
     
 }
 
-- (void)setSubPersons:(NSArray *)subs{
-    ///test
-    NSLog(@"called set subpersons : %@", subs);
+- (void)setChildern:(NSArray *)childern{
+    NSLog(@"call set childern %@",childern);
+    _childern = childern;
 }
 
 @end

@@ -77,48 +77,77 @@
 
 KVC会首先尝试使用accessor方法去获取和设置对应的值，如果没有，才直接访问对应的实例变量。
 
-##### 1.简单属性的查找模式
+##### 1. 简单属性的查找模式
 
 对于`setValue:forKey:`
 当对一个属性调用`setValue:forKey:`的时候，按照下面顺序查找：
+
 * (1)类先寻找名字和`set<Key>:`相同的accessor方法。
+
 * (2)如果没有找到accessor方法，并且类的方法`accessInstanceVariablesDirectly`返回YES，则比较类中实例变量和下面的名字是否相配，`_<key>`、`_is<Key>`，`<key>`，`is<Key>`(按序比较)。
+
 * (3)如果一个相匹配的accessor方法或者实例变量被找到，则用其去设置值。
+
 * (4)如果都没有找到，则会调用方法`setValue:forUndefinedKey:`。
+
 
 对于`valueForKey:`
 * (1)首先在类中按照`get<Key>`、`<key>`、`is<Key>`的顺序去寻找对应的accessor方法，如果找到，则直接调用。如果方法返回的是对象指针类型，则直接简单的返回，如果返回的类型为scalar，并且支持NSNumber转换，返回返回一个NSNumber；否则转换为一个NSValue并返回。
+
 * (2)如果对应的accessor方法没有找到，则在类中寻找如下格式的方法`countOf<Key>`、`objectIn<Key>AtIndex:`(对应于NSArray中的primitive methods)、`<key>AtIndexes:`(对应于NSArray中的方法 objectsAtIndexes:)。
 如果`countOf<Key>`方法和剩下的两个方法中的至少一个找到了，则一个能响应所有NSArray方法的集合代理对象（collection proxy object）会返回。每一个发送给集合代理对象的NSArray方法都是有方法`countOf<Key>`、`objectIn<Key>AtIndex:`、`<key>AtIndexes:`组合起来的。
+
 * (3)如果上述一些列array access方法没有找到，则继续寻找是否有下面三个方法`countOf<Key>`、`enumeratorOf<Key>`、`memberOf<Key>:`(对应NSSet的primitive methods)。
+
 如果这三个方法发现了，则一个能响应所有NSSet方法的集合代理对象（collection proxy object）会返回，每一个发送给集合代理对象的NSSet方法都是有方法`countOf<Key>`、`enumeratorOf<Key>`、`memberOf<Key>:`组合起来的。
+
 * (4)如果上述方法都没有发现，并且类的方法`accessInstanceVariablesDirectly`返回YES，则会按下面顺序去寻找对应的实例变量名字`_<key>`、`_is<Key>`、`<key>`、`is<Key>`，如果找到，则对应的值会返回，如果值为scalar类型，则会包裹成对应的NSNumber或者NSValue再返回。
+
 * (5)如果上面的都没有找到，则会调用方法`valueForUndefinedKey:`。
 
 
-##### 2.ordered collection的查找模式
+##### 2. ordered collection的查找模式
 
 对于方法`mutableArrayValueForKey:`的查找如下：
 * (1)类首先名字匹配`insertObject:in<Key>AtIndex:`和`removeObjectFrom<Key>AtIndex:`的方法(对应NSMutableArray的方法`insertObject:atIndex:`、`removeObjectAtIndex:`)，或者名字匹配`insert<Key>:atIndexes:`和`remove<Key>AtIndexes:`的方法(对应NSMutableArray的方法`insertObjects:atIndexes:`、`removeObjectsAtIndexes:`)。
 如果至少一个insetion方法和至少一个removal方法找到，则返回一个collection proxy object，对其的调用的每一个NSMutableArray方法都是有上面的insetion方法和removal方法组成完成的。
-* (2)
+
+* (2)如果没有，类会寻找名字为`set<Key>:`的accessor method，如果找到这样的方法，则返回collection proxy object，后面每一个发送给collection proxy object的NSMutableArray信息都会调用`set<Key>:`方法。但是这样是低效的，如果想要效率更高，则要按照步骤(1)进行实现。
+
+* (3)如果上面的都没有满足，则如果对象的类方法`accessInstanceVariablesDirectly`返回YES，则会继续按照`_<key>`、`<key>`顺序寻找名字匹配的实例变量。
+如果找到这样的实例变量，则返回一个collection proxy object，每一个发送给此对象的NSMutableArray方法，都会转发给实例变量，此实例变量的类型通常为NSMutableArray或者NSMutableArray的子类。
+
+* (4)最后如果上面的都没有满足，返回一个collection proxy object，当对返回一个collection proxy object发送消息的时候，会调用`setValue:forUndefinedKey:`方法，默认是抛出一个异常。
 
 
+##### 3.uniquing ordered collection的查找模式
+
+对于方法`mutableOrderedSetValueForKey:`的查找如下：
+* (1) 在类中查找名为`insertObject:in<Key>AtIndex:`和`removeObjectFrom<Key>AtIndex:`的方法(对应于NSMutableOrderSet的两个primitive methods)，或者名为`insert<Key>:atIndexes:`和`remove<Key>AtIndexes:`的方法。
+如果至少有一个insertion方法和一个removal方法被找到，则发送给返回的collection proxy object的NSMutableOrderedSet消息，会有上面的方法合并实现。
+
+* (2)如果没有发现上面的方法，则找名字和`set<Key>`匹配的accessor方法，后面的处理和上面一样。
+
+* (3)如果上面的都没有满足，则如果对象的类方法`accessInstanceVariablesDirectly`返回YES，则会继续按照`_<key>`、`<key>`顺序寻找名字匹配的实例变量。
+如果找到这样的实例变量，则返回一个collection proxy object，每一个发送给此对象的NSMutableOrderedSet方法，都会转发给实例变量，此实例变量的类型通常为NSMutableOrderedSet或者NSMutableOrderedSet的子类。
+
+* (4)最后如果上面的都没有满足，返回一个collection proxy object，当对返回一个collection proxy object发送消息的时候，会调用`setValue:forUndefinedKey:`方法，默认是抛出一个异常。
 
 
+##### 4. unordered collection的查找模式
 
+对于方法`mutableSetValueForKey:`的查找如下：
 
+* (1) 在类中查找名为`add<Key>Object:`和`remove<Key>Object:`的方法(对应NSMutableSet的`addObject:`和`removeObject:`)，和名为`add<Key>:`和`remove<Key>:`的方法(对应NSMutableSet的`unionSet:`和`minusSet:`)；如果至少一个addition方法和至少一个removal方法找到，则对`mutableSetValueForKey:`返回的collection proxy object发送NSMutableSet消息，会有上面发现的方法合并完成。
 
+* (2) 如果对象为一个managed object，则停止搜索。
 
+* (3) 则找名字和`set<Key>`匹配的accessor方法，后面的处理和上面一样。
 
+* (4) 如果上面的都没有满足，则如果对象的类方法`accessInstanceVariablesDirectly`返回YES，则会继续按照`_<key>`、`<key>`顺序寻找名字匹配的实例变量。
+如果找到这样的实例变量，则返回一个collection proxy object，每一个发送给此对象的NSMutableSet方法，都会转发给实例变量，此实例变量的类型通常为NSMutableSet或者NSMutableSet的子类。
 
-
-
-
-
-
-
-
+* (5)最后如果上面的都没有满足，返回一个collection proxy object，当对返回一个collection proxy object发送消息的时候，会调用`setValue:forUndefinedKey:`方法，默认是抛出一个异常。
 
 
 

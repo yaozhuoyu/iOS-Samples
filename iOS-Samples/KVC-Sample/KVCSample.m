@@ -113,10 +113,16 @@
 
 - (void)test_orderCollectionsSearch{
     Person *mPerson = [[Person alloc] init];
-    NSMutableArray *mutableArray = [mPerson mutableArrayValueForKey:@"subPersons"];
+    mPerson.childern = [NSArray arrayWithObjects:@"child0", nil];
+    NSMutableArray *mutableArray = [mPerson mutableArrayValueForKey:@"childern"];
     NSLog(@"mutableArray : %@", mutableArray);
-    //[mutableArray addObject:@"sub0"];
-    NSLog(@"mutableArray : %@", mutableArray);
+    [mutableArray addObject:@"sub0"];
+    NSLog(@"mPerson.childern : %@", mPerson.childern);
+    
+    NSMutableArray *interalArray = [mPerson mutableArrayValueForKey:@"internalChildern"];
+    NSLog(@"interalArray : %@", interalArray);
+    [interalArray addObject:@"interal_child0"];
+    NSLog(@"%@", mPerson);
     
 }
 
